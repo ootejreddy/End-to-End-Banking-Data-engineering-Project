@@ -1,0 +1,170 @@
+version: "3.8" # Use Docker Compose version 3.8
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0 # Use Confluent Zookeeper image version 7.4.0
+    platform: linux/amd64
+    container_name: zookeeper # Name the container 'zookeeper' for easy reference
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181 # Port where Zookeeper listens for client connections
+      ZOOKEEPER_TICK_TIME: 2000 # The length of a single tick in milliseconds (basic time unit)
+    ports:
+      - "2181:2181" # Map host port 2181 to container port 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.1 # Use Confluent Kafka image version 7.4.1
+    platform: linux/amd64
+    container_name: kafka # Name the container 'kafka'
+    depends_on:
+      - zookeeper # Start Zookeeper before starting Kafka
+    ports:
+      - "9092:9092" # Map host port 9092 to container port 9092 (internal Docker network access)
+      - "29092:29092" # Map host port 29092 to container port 29092 (host machine access)
+    environment:
+      KAFKA_BROKER_ID: 1 # Unique identifier for this Kafka broker
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 # Connection string for Zookeeper
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092 # Interfaces Kafka listens on
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://host.docker.internal:29092 # How clients connect (internal vs host)
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT # Security protocol for each listener
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT # Name of listener for communication between brokers
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Replication factor for internal offsets topic (1 for single node)
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1 # Replication factor for transaction state logs
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1 # Minimum in-sync replicas for transaction state logs
+
+  connect:
+    image: debezium/connect:2.2 # Use Debezium Connect image for Change Data Capture (CDC)
+    platform: linux/amd64
+    container_name: debezium_connect # Name the container 'debezium_connect'
+    depends_on:
+      - kafka # Wait for Kafka to start
+      - zookeeper # Wait for Zookeeper to start
+      - postgres # Wait for Postgres to start
+    ports:
+      - "8083:8083" # Map host port 8083 to container port 8083 (Kafka Connect REST API)
+    environment:
+      BOOTSTRAP_SERVERS: "kafka:9092" # Kafka broker connection string
+      GROUP_ID: "1" # Consumer group ID for this Connect cluster
+      CONFIG_STORAGE_TOPIC: "connect-configs" # Topic for storing connector configurations
+      OFFSET_STORAGE_TOPIC: "connect-offsets" # Topic for storing source offsets
+      STATUS_STORAGE_TOPIC: "connect-status" # Topic for storing connector status
+      KEY_CONVERTER_SCHEMAS_ENABLE: "false" # Disable schema registry for keys (using JSON)
+      VALUE_CONVERTER_SCHEMAS_ENABLE: "false" # Disable schema registry for values (using JSON)
+      KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter" # Use JSON converter for keys
+      VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter" # Use JSON converter for values
+
+  postgres:
+    image: postgres:15 # Use PostgreSQL version 15 image
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Set password from environment variable
+      POSTGRES_USER: ${POSTGRES_USER} # Set user from environment variable
+      POSTGRES_DB: ${POSTGRES_DB} # Set default database name from environment variable
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data # Bind mount local directory to container data directory
+    command:
+      > # Custom command to start Postgres with logical replication enabled
+      postgres -c wal_level=logical
+              -c max_wal_senders=10
+              -c max_replication_slots=10
+
+  minio:
+    image: minio/minio:latest # Use the latest MinIO image (S3 compatible object storage)
+    command: server /data --console-address ":9001" # Start MinIO server and specify console port
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER} # Set root user from environment variable
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD} # Set root password from environment variable
+    ports:
+      - "9000:9000" # Map host port 9000 to container port 9000 (API)
+      - "9001:9001" # Map host port 9001 to container port 9001 (Console UI)
+    volumes:
+      - ./docker/minio/data:/data # Bind mount local directory for MinIO data
+
+  airflow-init:
+    build:
+      context: . # Build image from current directory (same as webserver/scheduler)
+      dockerfile: docker-airflow.dockerfile # Use the custom Airflow Dockerfile
+    container_name: airflow-init # Name the container
+    depends_on:
+      - airflow-postgres # Must wait for Postgres to be up before initializing DB
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False # Don't load example DAGs during init
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@airflow-postgres:5432/${AIRFLOW_DB_NAME} # DB connection string
+    command: >
+      bash -c "airflow db init && \
+      airflow users create \
+      --username admin \
+      --firstname Admin \
+      --lastname User \
+      --role Admin \
+      --email admin@example.com \
+      --password admin"  # Initialize DB and create default admin user
+
+  airflow-webserver:
+    build:
+      context: . # Build image from current directory
+      dockerfile: docker-airflow.dockerfile # Use specific Dockerfile
+    container_name: airflow-webserver # Name the container
+    restart: always # Restart container automatically if it stops
+    depends_on:
+      airflow-scheduler:
+        condition: service_started
+      airflow-postgres:
+        condition: service_started
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False # Do not load example DAGs
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@airflow-postgres:5432/${AIRFLOW_DB_NAME} # Connection string for Airflow metadata DB
+    volumes:
+      - ./docker/dags:/opt/airflow/dags # Mount local DAGs directory
+      - ./docker/logs:/opt/airflow/logs # Mount local logs directory
+      - ./docker/plugins:/opt/airflow/plugins # Mount local plugins directory
+      - ./banking_dbt:/opt/airflow/banking_dbt # Mount DBT project
+      - ./banking_dbt/.dbt:/home/airflow/.dbt # Mount DBT profiles
+    ports:
+      - "8080:8080" # Map host port 8080 to container port 8080 (Airflow Web UI)
+    command: webserver # Command to start the Airflow webserver
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: docker-airflow.dockerfile
+    container_name: airflow-scheduler
+    restart: always # Restart container automatically if it stops
+    depends_on:
+      airflow-postgres:
+        condition: service_started
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False # Do not load example DAGs
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@airflow-postgres:5432/${AIRFLOW_DB_NAME} # Connection string for Airflow metadata DB
+    volumes:
+      - ./docker/dags:/opt/airflow/dags # Mount local DAGs directory
+      - ./docker/logs:/opt/airflow/logs # Mount local logs directory
+      - ./docker/plugins:/opt/airflow/plugins # Mount local plugins directory
+      - ./banking_dbt:/opt/airflow/banking_dbt # Mount DBT project
+      - ./banking_dbt/.dbt:/home/airflow/.dbt # Mount DBT profiles
+    command: scheduler # Command to start the Airflow scheduler
+
+  airflow-postgres:
+    image: postgres:15 # Use Postgres 15 for Airflow metadata
+    container_name: airflow-postgres # Name the container
+    restart: always # Restart container automatically if it stops
+    environment:
+      POSTGRES_USER: ${AIRFLOW_DB_USER} # Set user from environment variable
+      POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD} # Set password from environment variable
+      POSTGRES_DB: ${AIRFLOW_DB_NAME} # Set database name from environment variable
+    volumes:
+      - airflow_postgres_data:/var/lib/postgresql/data # Persist data to named volume
+    ports:
+      - "5433:5432" # Map host port 5433 to container port 5432 (Avoid conflict with validation Postgres)
+
+volumes:
+  airflow_postgres_data: # Define volume for Airflow Postgres data
+  postgres_data: # Define volume for business Postgres data (note: business postgres above currently uses bind mount)
+
+networks:
+  default:
+    name: banking-mds-net # Name the default network 'banking-mds-net'
