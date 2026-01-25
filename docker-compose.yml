@@ -151,6 +151,14 @@ services:
   airflow-postgres:
     image: postgres:15 # Use Postgres 15 for Airflow metadata
     container_name: airflow-postgres # Name the container
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_replication_slots=10"
+      - "-c"
+      - "max_wal_senders=10"
     restart: always # Restart container automatically if it stops
     environment:
       POSTGRES_USER: ${AIRFLOW_DB_USER} # Set user from environment variable
