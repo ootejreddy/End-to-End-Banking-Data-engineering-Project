@@ -24,7 +24,7 @@ services:
       KAFKA_BROKER_ID: 1 # Unique identifier for this Kafka broker
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181 # Connection string for Zookeeper
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092 # Interfaces Kafka listens on
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://host.docker.internal:29092 # How clients connect (internal vs host)
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092 # How clients connect (internal vs host)
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT # Security protocol for each listener
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT # Name of listener for communication between brokers
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 # Replication factor for internal offsets topic (1 for single node)
