@@ -1,0 +1,55 @@
+[2026-01-27T08:18:53.295+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-01-27T08:18:53.309+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T07:42:00+00:00 [queued]>
+[2026-01-27T08:18:53.312+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T07:42:00+00:00 [queued]>
+[2026-01-27T08:18:53.312+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2026-01-27T08:18:53.316+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): load_snowflake> on 2026-01-27 07:42:00+00:00
+[2026-01-27T08:18:53.320+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'minio_to_snowflake_banking', 'load_snowflake', 'scheduled__2026-01-27T07:42:00+00:00', '--job-id', '268', '--raw', '--subdir', 'DAGS_FOLDER/minio_to_snowflake_dag.py', '--cfg-path', '/tmp/tmpozm6sbij']
+[2026-01-27T08:18:53.321+0000] {standard_task_runner.py:91} INFO - Job 268: Subtask load_snowflake
+[2026-01-27T08:18:53.321+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=9297) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-01-27T08:18:53.322+0000] {standard_task_runner.py:64} INFO - Started process 9304 to run task
+[2026-01-27T08:18:53.341+0000] {task_command.py:426} INFO - Running <TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T07:42:00+00:00 [running]> on host f7e57c740e9e
+[2026-01-27T08:18:53.373+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='minio_to_snowflake_banking' AIRFLOW_CTX_TASK_ID='load_snowflake' AIRFLOW_CTX_EXECUTION_DATE='2026-01-27T07:42:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-01-27T07:42:00+00:00'
+[2026-01-27T08:18:53.374+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-01-27T08:18:53.382+0000] {connection.py:611} INFO - Snowflake Connector for Python Version: 4.2.0, Python Version: 3.12.4, Platform: Linux-6.10.14-linuxkit-aarch64-with-glibc2.36
+[2026-01-27T08:18:53.383+0000] {connection.py:1695} INFO - Connecting to GLOBAL Snowflake domain
+[2026-01-27T08:18:56.432+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/customers_215036692531.parquet -> @customers stage
+[2026-01-27T08:18:56.632+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/customers_215046805845.parquet -> @customers stage
+[2026-01-27T08:18:56.830+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/customers_215056955161.parquet -> @customers stage
+[2026-01-27T08:18:57.013+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/customers_231527933510.parquet -> @customers stage
+[2026-01-27T08:18:57.478+0000] {logging_mixin.py:188} INFO - Data loaded into customers
+[2026-01-27T08:37:08.760+0000] {connectionpool.py:868} WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLError("bad handshake: SysCallError(-1, 'Unexpected EOF')"))': /queries/v1/query-request?requestId=15c1d3b3-e9a6-444e-8a9c-05132f6db404&clientStartTime=1769501937479&retryCount=1&retryReason=0&request_guid=200e2ff3-15ed-4a41-aef2-190253e4deab
+[2026-01-27T08:37:09.945+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-01-27T08:37:09.948+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/minio_to_snowflake_dag.py", line 102, in load_to_snowflake
+    cur.execute(f"PUT file://{f} @%{table}")
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/cursor.py", line 1142, in execute
+    Error.errorhandler_wrapper(self.connection, self, error_class, errvalue)
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 298, in errorhandler_wrapper
+    handed_over = Error.hand_to_other_handler(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 354, in hand_to_other_handler
+    cursor.errorhandler(connection, cursor, error_class, error_value)
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 229, in default_errorhandler
+    raise error_class(
+snowflake.connector.errors.ProgrammingError: 000612 (02000): 01c20235-0004-5a88-000b-2cce0001914e: Result not found
+[2026-01-27T08:37:10.002+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=minio_to_snowflake_banking, task_id=load_snowflake, run_id=scheduled__2026-01-27T07:42:00+00:00, execution_date=20260127T074200, start_date=20260127T081853, end_date=20260127T083710
+[2026-01-27T08:37:10.056+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 268 for task load_snowflake (000612 (02000): 01c20235-0004-5a88-000b-2cce0001914e: Result not found; 9304)
+[2026-01-27T08:37:10.082+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-01-27T08:37:10.117+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-01-27T08:37:10.118+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

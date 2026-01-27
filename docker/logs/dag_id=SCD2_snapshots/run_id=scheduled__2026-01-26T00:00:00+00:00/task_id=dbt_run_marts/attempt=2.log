@@ -1,0 +1,130 @@
+[2026-01-27T02:23:59.922+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-01-27T02:23:59.934+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [queued]>
+[2026-01-27T02:23:59.937+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [queued]>
+[2026-01-27T02:23:59.937+0000] {taskinstance.py:2306} INFO - Starting attempt 2 of 2
+[2026-01-27T02:23:59.941+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): dbt_run_marts> on 2026-01-26 00:00:00+00:00
+[2026-01-27T02:23:59.943+0000] {standard_task_runner.py:64} INFO - Started process 1803 to run task
+[2026-01-27T02:23:59.944+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'SCD2_snapshots', 'dbt_run_marts', 'scheduled__2026-01-26T00:00:00+00:00', '--job-id', '254', '--raw', '--subdir', 'DAGS_FOLDER/scd_snapshots.py', '--cfg-path', '/tmp/tmpe0nagmkx']
+[2026-01-27T02:23:59.945+0000] {standard_task_runner.py:91} INFO - Job 254: Subtask dbt_run_marts
+[2026-01-27T02:23:59.979+0000] {task_command.py:426} INFO - Running <TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [running]> on host e566996476d9
+[2026-01-27T02:24:00.014+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='SCD2_snapshots' AIRFLOW_CTX_TASK_ID='dbt_run_marts' AIRFLOW_CTX_EXECUTION_DATE='2026-01-26T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-01-26T00:00:00+00:00'
+[2026-01-27T02:24:00.015+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-01-27T02:24:00.022+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-01-27T02:24:00.023+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '\n        cd /opt/***/banking_dbt &&\n        dbt run --select marts --profiles-dir /home/***/.dbt\n        ']
+[2026-01-27T02:24:00.026+0000] {subprocess.py:86} INFO - Output:
+[2026-01-27T02:24:01.348+0000] {subprocess.py:93} INFO - [0m02:24:01  Running with dbt=1.11.2
+[2026-01-27T02:24:01.815+0000] {subprocess.py:93} INFO - [0m02:24:01  Registered adapter: snowflake=1.11.1
+[2026-01-27T02:24:02.036+0000] {subprocess.py:93} INFO - [0m02:24:02  Found 8 models, 2 snapshots, 4 data tests, 3 sources, 522 macros
+[2026-01-27T02:24:02.037+0000] {subprocess.py:93} INFO - [0m02:24:02
+[2026-01-27T02:24:02.037+0000] {subprocess.py:93} INFO - [0m02:24:02  Concurrency: 4 threads (target='dev')
+[2026-01-27T02:24:02.037+0000] {subprocess.py:93} INFO - [0m02:24:02
+[2026-01-27T02:24:03.783+0000] {subprocess.py:93} INFO - [0m02:24:03  1 of 3 START sql table model analytics.dim_accounts ............................ [RUN]
+[2026-01-27T02:24:03.784+0000] {subprocess.py:93} INFO - [0m02:24:03  2 of 3 START sql table model analytics.dim_customers ........................... [RUN]
+[2026-01-27T02:24:03.785+0000] {subprocess.py:93} INFO - [0m02:24:03  3 of 3 START sql incremental model analytics.fact_transactions ................. [RUN]
+[2026-01-27T02:24:04.566+0000] {subprocess.py:93} INFO - [0m02:24:04  2 of 3 OK created sql table model analytics.dim_customers ...................... [[32mSUCCESS 1[0m in 0.78s]
+[2026-01-27T02:24:04.717+0000] {subprocess.py:93} INFO - [0m02:24:04  1 of 3 OK created sql table model analytics.dim_accounts ....................... [[32mSUCCESS 1[0m in 0.93s]
+[2026-01-27T02:24:05.728+0000] {subprocess.py:93} INFO - [0m02:24:05  3 of 3 ERROR creating sql incremental model analytics.fact_transactions ........ [[31mERROR[0m in 1.93s]
+[2026-01-27T02:24:06.677+0000] {subprocess.py:93} INFO - [0m02:24:06
+[2026-01-27T02:24:06.679+0000] {subprocess.py:93} INFO - [0m02:24:06  Finished running 1 incremental model, 2 table models in 0 hours 0 minutes and 4.64 seconds (4.64s).
+[2026-01-27T02:24:06.732+0000] {subprocess.py:93} INFO - [0m02:24:06
+[2026-01-27T02:24:06.732+0000] {subprocess.py:93} INFO - [0m02:24:06  [31mCompleted with 1 error, 0 partial successes, and 0 warnings:[0m
+[2026-01-27T02:24:06.733+0000] {subprocess.py:93} INFO - [0m02:24:06
+[2026-01-27T02:24:06.734+0000] {subprocess.py:93} INFO - [0m02:24:06  [31mFailure in model fact_transactions (models/marts/facts/fact_transactions.sql)[0m
+[2026-01-27T02:24:06.734+0000] {subprocess.py:93} INFO - [0m02:24:06    Database Error in model fact_transactions (models/marts/facts/fact_transactions.sql)
+[2026-01-27T02:24:06.734+0000] {subprocess.py:93} INFO -   100090 (42P18): Duplicate row detected during DML action
+[2026-01-27T02:24:06.735+0000] {subprocess.py:93} INFO -   Row Values: [redacted]
+[2026-01-27T02:24:06.735+0000] {subprocess.py:93} INFO -   compiled code at target/run/banking_dbt/models/marts/facts/fact_transactions.sql
+[2026-01-27T02:24:06.735+0000] {subprocess.py:93} INFO - [0m02:24:06
+[2026-01-27T02:24:06.735+0000] {subprocess.py:93} INFO - [0m02:24:06    compiled code at target/compiled/banking_dbt/models/marts/facts/fact_transactions.sql
+[2026-01-27T02:24:06.735+0000] {subprocess.py:93} INFO - [0m02:24:06
+[2026-01-27T02:24:06.736+0000] {subprocess.py:93} INFO - [0m02:24:06  Done. PASS=2 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=3
+[2026-01-27T02:24:07.974+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-01-27T02:24:07.975+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-01-27T02:24:07.987+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-01-27T02:24:07.991+0000] {taskinstance.py:1206} INFO - Marking task as FAILED. dag_id=SCD2_snapshots, task_id=dbt_run_marts, run_id=scheduled__2026-01-26T00:00:00+00:00, execution_date=20260126T000000, start_date=20260127T022359, end_date=20260127T022407
+[2026-01-27T02:24:07.999+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 254 for task dbt_run_marts (Bash command failed. The command returned a non-zero exit code 1.; 1803)
+[2026-01-27T02:24:08.020+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-01-27T02:24:08.032+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-01-27T02:24:08.032+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
+[2026-01-27T23:26:00.257+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-01-27T23:26:00.283+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [queued]>
+[2026-01-27T23:26:00.287+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [queued]>
+[2026-01-27T23:26:00.287+0000] {taskinstance.py:2306} INFO - Starting attempt 2 of 2
+[2026-01-27T23:26:00.293+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): dbt_run_marts> on 2026-01-26 00:00:00+00:00
+[2026-01-27T23:26:00.296+0000] {standard_task_runner.py:64} INFO - Started process 7078 to run task
+[2026-01-27T23:26:00.298+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'SCD2_snapshots', 'dbt_run_marts', 'scheduled__2026-01-26T00:00:00+00:00', '--job-id', '1202', '--raw', '--subdir', 'DAGS_FOLDER/scd_snapshots.py', '--cfg-path', '/tmp/tmp0gwdee00']
+[2026-01-27T23:26:00.299+0000] {standard_task_runner.py:91} INFO - Job 1202: Subtask dbt_run_marts
+[2026-01-27T23:26:00.339+0000] {task_command.py:426} INFO - Running <TaskInstance: SCD2_snapshots.dbt_run_marts scheduled__2026-01-26T00:00:00+00:00 [running]> on host aa98137bd6c9
+[2026-01-27T23:26:00.416+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='SCD2_snapshots' AIRFLOW_CTX_TASK_ID='dbt_run_marts' AIRFLOW_CTX_EXECUTION_DATE='2026-01-26T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-01-26T00:00:00+00:00'
+[2026-01-27T23:26:00.417+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-01-27T23:26:00.427+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-01-27T23:26:00.428+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '\n        cd /opt/***/banking_dbt &&\n        dbt run --select marts --profiles-dir /home/***/.dbt\n        ']
+[2026-01-27T23:26:00.432+0000] {subprocess.py:86} INFO - Output:
+[2026-01-27T23:26:02.342+0000] {subprocess.py:93} INFO - [0m23:26:02  Running with dbt=1.11.2
+[2026-01-27T23:26:02.931+0000] {subprocess.py:93} INFO - [0m23:26:02  Registered adapter: snowflake=1.11.1
+[2026-01-27T23:26:03.172+0000] {subprocess.py:93} INFO - [0m23:26:03  Found 8 models, 2 snapshots, 4 data tests, 3 sources, 522 macros
+[2026-01-27T23:26:03.174+0000] {subprocess.py:93} INFO - [0m23:26:03
+[2026-01-27T23:26:03.174+0000] {subprocess.py:93} INFO - [0m23:26:03  Concurrency: 4 threads (target='dev')
+[2026-01-27T23:26:03.174+0000] {subprocess.py:93} INFO - [0m23:26:03
+[2026-01-27T23:26:05.004+0000] {subprocess.py:93} INFO - [0m23:26:05  1 of 3 START sql table model analytics.dim_accounts ............................ [RUN]
+[2026-01-27T23:26:05.006+0000] {subprocess.py:93} INFO - [0m23:26:05  2 of 3 START sql table model analytics.dim_customers ........................... [RUN]
+[2026-01-27T23:26:05.008+0000] {subprocess.py:93} INFO - [0m23:26:05  3 of 3 START sql incremental model analytics.fact_transactions ................. [RUN]
+[2026-01-27T23:26:05.175+0000] {subprocess.py:93} INFO - [0m23:26:05  1 of 3 ERROR creating sql table model analytics.dim_accounts ................... [[31mERROR[0m in 0.17s]
+[2026-01-27T23:26:05.184+0000] {subprocess.py:93} INFO - [0m23:26:05  2 of 3 ERROR creating sql table model analytics.dim_customers .................. [[31mERROR[0m in 0.18s]
+[2026-01-27T23:26:09.576+0000] {subprocess.py:93} INFO - [0m23:26:09  3 of 3 OK created sql incremental model analytics.fact_transactions ............ [[32mSUCCESS 600[0m in 4.56s]
+[2026-01-27T23:26:10.116+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.118+0000] {subprocess.py:93} INFO - [0m23:26:10  Finished running 1 incremental model, 2 table models in 0 hours 0 minutes and 6.94 seconds (6.94s).
+[2026-01-27T23:26:10.186+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.186+0000] {subprocess.py:93} INFO - [0m23:26:10  [31mCompleted with 2 errors, 0 partial successes, and 0 warnings:[0m
+[2026-01-27T23:26:10.187+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.188+0000] {subprocess.py:93} INFO - [0m23:26:10  [31mFailure in model dim_accounts (models/marts/dimensions/dim_accounts.sql)[0m
+[2026-01-27T23:26:10.188+0000] {subprocess.py:93} INFO - [0m23:26:10    Database Error in model dim_accounts (models/marts/dimensions/dim_accounts.sql)
+[2026-01-27T23:26:10.189+0000] {subprocess.py:93} INFO -   003001 (42501): SQL access control error:
+[2026-01-27T23:26:10.189+0000] {subprocess.py:93} INFO -   Insufficient privileges to operate on schema 'ANALYTICS'.
+[2026-01-27T23:26:10.189+0000] {subprocess.py:93} INFO -   compiled code at target/run/banking_dbt/models/marts/dimensions/dim_accounts.sql
+[2026-01-27T23:26:10.189+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.189+0000] {subprocess.py:93} INFO - [0m23:26:10    compiled code at target/compiled/banking_dbt/models/marts/dimensions/dim_accounts.sql
+[2026-01-27T23:26:10.190+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.190+0000] {subprocess.py:93} INFO - [0m23:26:10  [31mFailure in model dim_customers (models/marts/dimensions/dim_customers.sql)[0m
+[2026-01-27T23:26:10.190+0000] {subprocess.py:93} INFO - [0m23:26:10    Database Error in model dim_customers (models/marts/dimensions/dim_customers.sql)
+[2026-01-27T23:26:10.191+0000] {subprocess.py:93} INFO -   003001 (42501): SQL access control error:
+[2026-01-27T23:26:10.191+0000] {subprocess.py:93} INFO -   Insufficient privileges to operate on schema 'ANALYTICS'.
+[2026-01-27T23:26:10.191+0000] {subprocess.py:93} INFO -   compiled code at target/run/banking_dbt/models/marts/dimensions/dim_customers.sql
+[2026-01-27T23:26:10.191+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.191+0000] {subprocess.py:93} INFO - [0m23:26:10    compiled code at target/compiled/banking_dbt/models/marts/dimensions/dim_customers.sql
+[2026-01-27T23:26:10.192+0000] {subprocess.py:93} INFO - [0m23:26:10
+[2026-01-27T23:26:10.192+0000] {subprocess.py:93} INFO - [0m23:26:10  Done. PASS=1 WARN=0 ERROR=2 SKIP=0 NO-OP=0 TOTAL=3
+[2026-01-27T23:26:10.980+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-01-27T23:26:10.982+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-01-27T23:26:11.004+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-01-27T23:26:11.011+0000] {taskinstance.py:1206} INFO - Marking task as FAILED. dag_id=SCD2_snapshots, task_id=dbt_run_marts, run_id=scheduled__2026-01-26T00:00:00+00:00, execution_date=20260126T000000, start_date=20260127T232600, end_date=20260127T232611
+[2026-01-27T23:26:11.027+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 1202 for task dbt_run_marts (Bash command failed. The command returned a non-zero exit code 1.; 7078)
+[2026-01-27T23:26:11.048+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-01-27T23:26:11.058+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-01-27T23:26:11.059+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

@@ -1,0 +1,13 @@
+banking_dbt:
+  outputs:
+    dev:
+      account: SEKALYA-XK65403
+      database: banking_database
+      password: atJvn5GNh2HsDfc
+      role: sysadmin
+      schema: analytics
+      threads: 4
+      type: snowflake
+      user: HASHIRAMA007
+      warehouse: compute_wh
+  target: dev

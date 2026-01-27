@@ -41,6 +41,7 @@ services:
       - postgres # Wait for Postgres to start
     ports:
       - "8083:8083" # Map host port 8083 to container port 8083 (Kafka Connect REST API)
+    restart: always
     environment:
       BOOTSTRAP_SERVERS: "kafka:9092" # Kafka broker connection string
       GROUP_ID: "1" # Consumer group ID for this Connect cluster
@@ -54,6 +55,7 @@ services:
 
   postgres:
     image: postgres:15 # Use PostgreSQL version 15 image
+    container_name: banking_postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Set password from environment variable
       POSTGRES_USER: ${POSTGRES_USER} # Set user from environment variable
@@ -70,6 +72,7 @@ services:
 
   minio:
     image: minio/minio:latest # Use the latest MinIO image (S3 compatible object storage)
+    container_name: minio
     command: server /data --console-address ":9001" # Start MinIO server and specify console port
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER} # Set root user from environment variable

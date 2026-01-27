@@ -1,0 +1,68 @@
+[2026-01-27T09:56:41.689+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-01-27T09:56:41.702+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T08:35:00+00:00 [queued]>
+[2026-01-27T09:56:41.705+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T08:35:00+00:00 [queued]>
+[2026-01-27T09:56:41.705+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2026-01-27T09:56:41.710+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): load_snowflake> on 2026-01-27 08:35:00+00:00
+[2026-01-27T09:56:41.715+0000] {standard_task_runner.py:90} INFO - Running: ['***', 'tasks', 'run', 'minio_to_snowflake_banking', 'load_snowflake', 'scheduled__2026-01-27T08:35:00+00:00', '--job-id', '272', '--raw', '--subdir', 'DAGS_FOLDER/minio_to_snowflake_dag.py', '--cfg-path', '/tmp/tmp2xjp3yfr']
+[2026-01-27T09:56:41.718+0000] {standard_task_runner.py:91} INFO - Job 272: Subtask load_snowflake
+[2026-01-27T09:56:41.718+0000] {logging_mixin.py:188} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:62 DeprecationWarning: This process (pid=9408) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-01-27T09:56:41.719+0000] {standard_task_runner.py:64} INFO - Started process 9417 to run task
+[2026-01-27T09:56:41.746+0000] {task_command.py:426} INFO - Running <TaskInstance: minio_to_snowflake_banking.load_snowflake scheduled__2026-01-27T08:35:00+00:00 [running]> on host f7e57c740e9e
+[2026-01-27T09:56:41.788+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='minio_to_snowflake_banking' AIRFLOW_CTX_TASK_ID='load_snowflake' AIRFLOW_CTX_EXECUTION_DATE='2026-01-27T08:35:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2026-01-27T08:35:00+00:00'
+[2026-01-27T09:56:41.789+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-01-27T09:56:41.799+0000] {connection.py:611} INFO - Snowflake Connector for Python Version: 4.2.0, Python Version: 3.12.4, Platform: Linux-6.10.14-linuxkit-aarch64-with-glibc2.36
+[2026-01-27T09:56:41.800+0000] {connection.py:1695} INFO - Connecting to GLOBAL Snowflake domain
+[2026-01-27T09:56:45.139+0000] {connectionpool.py:868} WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'SSLError(SSLError("bad handshake: SysCallError(-1, 'Unexpected EOF')"))': /session/v1/login-request?request_id=0c374e66-e5e8-4afc-b8cd-91c15840360c&databaseName=banking_database&schemaName=RAW&warehouse=COMPUTE_WH&request_guid=c9eb0a02-f5c4-48f8-93ff-ebc19f266db1
+[2026-01-27T09:56:46.976+0000] {file_transfer_agent.py:631} ERROR - An exception was raised in <bound method SnowflakeStorageClient.prepare_upload of <snowflake.connector.s3_storage_client.SnowflakeS3RestClient object at 0xffff724b5b20>>
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/file_transfer_agent.py", line 628, in function_and_callback_wrapper
+    work(*args, **kwargs),
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/storage_client.py", line 228, in prepare_upload
+    self.preprocess()
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/storage_client.py", line 194, in preprocess
+    file_header = self.get_file_header(
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/s3_storage_client.py", line 437, in get_file_header
+    response.raise_for_status()
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/vendored/requests/models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+snowflake.connector.vendored.requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://sfc-oh-ds1-104-customer-stage.s3.amazonaws.com/9axf1000-s/tables/47996342345/customers_215036692531.parquet
+[2026-01-27T09:56:46.998+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-01-27T09:56:47.003+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 401, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 235, in execute
+    return_value = self.execute_callable()
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/python.py", line 252, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/airflow/dags/minio_to_snowflake_dag.py", line 102, in load_to_snowflake
+    cur.execute(f"PUT file://{f} @%{table}")
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/cursor.py", line 1096, in execute
+    data = sf_file_transfer_agent.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/file_transfer_agent.py", line 782, in result
+    Error.errorhandler_wrapper(
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 298, in errorhandler_wrapper
+    handed_over = Error.hand_to_other_handler(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 354, in hand_to_other_handler
+    cursor.errorhandler(connection, cursor, error_class, error_value)
+  File "/home/airflow/.local/lib/python3.12/site-packages/snowflake/connector/errors.py", line 229, in default_errorhandler
+    raise error_class(
+snowflake.connector.errors.OperationalError: 253003: 253003: While putting file(s) there was an error: 'HTTPError('403 Client Error: Forbidden for url: https://sfc-oh-ds1-104-customer-stage.s3.amazonaws.com/9axf1000-s/tables/47996342345/customers_215036692531.parquet')', this might be caused by your access to the blob storage provider, or by Snowflake.
+[2026-01-27T09:56:47.021+0000] {taskinstance.py:1206} INFO - Marking task as UP_FOR_RETRY. dag_id=minio_to_snowflake_banking, task_id=load_snowflake, run_id=scheduled__2026-01-27T08:35:00+00:00, execution_date=20260127T083500, start_date=20260127T095641, end_date=20260127T095647
+[2026-01-27T09:56:47.044+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 272 for task load_snowflake (253003: 253003: While putting file(s) there was an error: 'HTTPError('403 Client Error: Forbidden for url: https://sfc-oh-ds1-104-customer-stage.s3.amazonaws.com/9axf1000-s/tables/47996342345/customers_215036692531.parquet')', this might be caused by your access to the blob storage provider, or by Snowflake.; 9417)
+[2026-01-27T09:56:47.074+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 1
+[2026-01-27T09:56:47.092+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-01-27T09:56:47.093+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
