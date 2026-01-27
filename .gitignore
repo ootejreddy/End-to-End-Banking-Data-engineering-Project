@@ -1,0 +1,33 @@
+# docker logs and cache
+/docker/logs
+/docker/cache
+/docker/airflow
+/docker/dbt
+/docker/postgres
+/docker/minio
+/docker/airflow
+/docker/dbt
+/docker/postgres
+/docker/minio
+/docker/kafka
+/docker/zookeeper
+/docker/airflow
+/docker/dbt
+/docker/postgres
+/docker/minio
+/docker/kafka
+/docker/zookeeper
+
+# git actions cache
+/.gitignore
+/.github/.cache
+
+#DBT Cache
+/.dbt
+banking_dbt/.dbt
+banking_dbt/analysis
+banking_dbt/models
+
+.env
+__pycache__/
+*.pyc

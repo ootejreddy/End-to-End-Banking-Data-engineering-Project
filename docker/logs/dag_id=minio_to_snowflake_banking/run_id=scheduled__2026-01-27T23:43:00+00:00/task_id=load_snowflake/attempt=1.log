@@ -45,3 +45,13 @@
 [2026-01-27T23:44:14.887+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_155900640835.parquet -> @transactions stage
 [2026-01-27T23:44:15.057+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_174001255061.parquet -> @transactions stage
 [2026-01-27T23:44:15.222+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_174003043256.parquet -> @transactions stage
+[2026-01-27T23:44:15.379+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_174004537184.parquet -> @transactions stage
+[2026-01-27T23:44:15.676+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_174006634556.parquet -> @transactions stage
+[2026-01-27T23:44:15.916+0000] {logging_mixin.py:188} INFO - Uploaded /tmp/minio_downloads/transactions_174009125643.parquet -> @transactions stage
+[2026-01-27T23:44:16.415+0000] {logging_mixin.py:188} INFO - Data loaded into transactions
+[2026-01-27T23:44:16.680+0000] {python.py:237} INFO - Done. Returned value was: None
+[2026-01-27T23:44:16.681+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-01-27T23:44:16.736+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=minio_to_snowflake_banking, task_id=load_snowflake, run_id=scheduled__2026-01-27T23:43:00+00:00, execution_date=20260127T234300, start_date=20260127T234404, end_date=20260127T234416
+[2026-01-27T23:44:16.773+0000] {local_task_job_runner.py:243} INFO - Task exited with return code 0
+[2026-01-27T23:44:16.800+0000] {taskinstance.py:3503} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-01-27T23:44:16.800+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
