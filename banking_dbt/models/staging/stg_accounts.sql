@@ -8,7 +8,7 @@ WITH ranked AS (
     v:account_type::STRING AS account_type,
     v:currency::string      as currency,
     v:created_at::TIMESTAMP AS created_at,
-    v:event_ts::TIMESTAMP_LTZ AS event_ts,
+    TO_TIMESTAMP_LTZ(v:event_ts::NUMBER / 1000) AS event_ts,
     v:lsn::NUMBER          AS lsn,
     v:op::STRING           AS op,
 

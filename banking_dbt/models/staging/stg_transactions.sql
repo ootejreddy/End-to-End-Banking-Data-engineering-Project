@@ -9,7 +9,7 @@ SELECT
     v:related_account_id::string AS related_account_id,
     v:status::string             AS status,
     v:created_at::timestamp      AS transaction_time,
-    v:event_ts::timestamp      AS event_ts,
+    TO_TIMESTAMP_LTZ(v:event_ts::NUMBER / 1000) AS event_ts,
     CURRENT_TIMESTAMP            AS load_timestamp,
     v:op::string                 AS op
 FROM {{ source('raw', 'transactions') }}

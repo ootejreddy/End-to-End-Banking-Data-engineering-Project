@@ -4,7 +4,9 @@ import json
 import pandas as pd
 from datetime import datetime
 import os
+import time
 from dotenv import load_dotenv
+from botocore.client import Config
 
 # -----------------------------
 # Load secrets from .env
@@ -23,7 +25,7 @@ consumer = KafkaConsumer(
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 
-from botocore.client import Config
+
 
 # ...
 
@@ -65,8 +67,8 @@ def write_to_minio(table_name, records):
         if os.path.exists(file_path):
             os.remove(file_path)
 
-# Batch consume
-import time
+
+
 
 # ... (rest of imports)
 

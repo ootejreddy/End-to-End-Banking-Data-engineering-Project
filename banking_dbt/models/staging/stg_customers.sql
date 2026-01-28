@@ -7,7 +7,7 @@ WITH ranked AS (
     v:last_name::STRING  AS last_name,
     v:email::STRING      AS email,
     v:created_at::TIMESTAMP AS created_at,
-    v:event_ts::TIMESTAMP_LTZ AS event_ts,
+    TO_TIMESTAMP_LTZ(v:event_ts::NUMBER / 1000) AS event_ts,
     v:lsn::NUMBER        AS lsn,
     v:op::STRING         AS op,
 
