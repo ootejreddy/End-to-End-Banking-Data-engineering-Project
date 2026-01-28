@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 import time
 from dotenv import load_dotenv
+from botocore.client import Config
 
 # -----------------------------
 # Load secrets from .env
@@ -24,7 +25,7 @@ consumer = KafkaConsumer(
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 
-from botocore.client import Config
+
 
 # ...
 
