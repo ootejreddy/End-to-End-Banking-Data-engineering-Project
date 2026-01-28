@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from datetime import datetime
 import os
+import time
 from dotenv import load_dotenv
 
 # -----------------------------
@@ -65,8 +66,8 @@ def write_to_minio(table_name, records):
         if os.path.exists(file_path):
             os.remove(file_path)
 
-# Batch consume
-import time
+
+
 
 # ... (rest of imports)
 
