@@ -1,33 +1,32 @@
 # docker logs and cache
-/docker/logs
-/docker/cache
-/docker/airflow
-/docker/dbt
-/docker/postgres
-/docker/minio
-/docker/airflow
-/docker/dbt
-/docker/postgres
-/docker/minio
-/docker/kafka
-/docker/zookeeper
-/docker/airflow
-/docker/dbt
-/docker/postgres
-/docker/minio
-/docker/kafka
-/docker/zookeeper
+/docker/logs/
+/docker/cache/
+/docker/postgres/data/
+/docker/minio/data/
 
 # git actions cache
-/.gitignore
 /.github/.cache
 
-#DBT Cache
-/.dbt
-banking_dbt/.dbt
-banking_dbt/analysis
-banking_dbt/models
+# DBT Cache and artifacts
+target/
+dbt_packages/
+logs/
+banking_dbt/target/
+banking_dbt/dbt_packages/
+banking_dbt/logs/
 
+# Local Environment Variables
 .env
+.env.*
+!.gitignore
+
+# Python Cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+.pytest_cache/
+.DS_Store
