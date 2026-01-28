@@ -23,7 +23,7 @@ We simulate **customer, account, and transaction data**, stream changes in real 
 
 ## 🏗️ Architecture
 
-<img width="5647" height="3107" alt="Architecture" src="[https://github.com/user-attachments/assets/7521ea8a-451e-46ff-9db0-71dd6ddf8181](https://github.com/ootejreddy/End-to-End-Banking-Data-engineering-Project/blob/e503159184c31ea8bafc0d240ff001bf38285749/Banking_data_engineering_architechture.png)" />
+<img width="5647" height="3107" alt="Architecture" src="[https://github.com/ootejreddy/End-to-End-Banking-Data-engineering-Project/blob/e503159184c31ea8bafc0d240ff001bf38285749/Banking_data_engineering_architechture.png]" />
 
 **Pipeline Flow:**
 
